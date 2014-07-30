@@ -27,6 +27,11 @@ class TimeSpec
         }
     }
 
+    public function at()
+    {
+
+    }
+
     public function getDays()
     {
         return $this->days;

@@ -3,13 +3,17 @@ namespace Punctual;
 
 class Cronjob
 {
+    /**
+     * @var TimeSpec
+     */
     private $timeSpec;
     private $command;
-    private $environment = array();
+    private $environment;
 
     public function __construct()
     {
         $this->timeSpec = new TimeSpec();
+        $this->environment = new Environment();
     }
 
     public function at($spec)
@@ -28,11 +32,7 @@ class Cronjob
     {
         $output = '';
 
-        $envVars = array();
-        foreach ($this->environment as $envVar => $value) {
-            $envVars[] = strtoupper($envVar) . '=' . $value;
-        }
-        $output .= implode(' ' , $envVars);
+        $output .= $this->environment->toString();
 
         $output .= ' ' . $this->command;
 
@@ -46,7 +46,9 @@ class Cronjob
 
     public function withEnvironment(array $envVars)
     {
-        $this->environment = $envVars;
+        foreach ($envVars as $key => $value) {
+            $this->environment[$key] = $value;
+        }
         return $this;
     }
 
